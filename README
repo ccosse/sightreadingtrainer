@@ -1,0 +1,21 @@
+MIDI Sight Reader 3.5
+December 12, 2013
+Author: Charles B. Cosse
+Website: www.asymptopia.org
+License: GPL-v2
+
+Hello!  This software was originally written with Java 1.6, and 
+at the time it ran as an applet in the browser as long as you had
+the Java 1.6 plugin installed.  The working web directory is still
+there for anyone still running the 1.6 Java Plugin.
+
+Today, Dec 12 2013, I have made a few small modifications to get the
+program working with Java 1.7, and on my Mac OS-X, which it now does.
+So, for version MFC-3.5 you should use Java 7, and launch the program 
+from within the unzipped directory with the command: java -jar MFC.jar
+
+The other option is to run the file MFC.py through the jython interpreter.
+For this you can use jython-2.2.1.  I have not tested with other versions,
+but jython-2.2.1 works with Java 1.7.  Launch like this: jython MFC.py
+
+
