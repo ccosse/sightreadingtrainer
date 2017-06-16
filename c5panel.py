@@ -38,7 +38,7 @@ class C5Panel(JPanel):
 		
 		self.img=None
 		if hostname[0:7]=='http://':
-			self.img=ImageIO.read(URL(self.hostname+'/static/MFC/img/'+imglist[0]))
+			self.img=ImageIO.read(URL(self.hostname+'/static/sightreadingtrainer/img/'+imglist[0]))
 		else:
 			self.img=ImageIO.read(File(self.hostname+'img/'+imglist[0]))
 		
@@ -52,7 +52,7 @@ class C5Panel(JPanel):
 			item=self.cb.getSelectedItem()
 			if DEBUG:print item
 			if self.hostname[0:7]=='http://':
-				self.img=ImageIO.read(URL(self.hostname+'/static/MFC/img/'+item))
+				self.img=ImageIO.read(URL(self.hostname+'/static/sightreadingtrainer/img/'+item))
 			else:
 				self.img=ImageIO.read(File(self.hostname+'img/'+item))
 			

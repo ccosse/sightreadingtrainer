@@ -9,7 +9,7 @@
 
     Email           :ccosse@gmail.com
 
-    Copyright       :(C) 2006-2014 Asymptopia Software
+    Copyright       :(C) 2006-2017 Asymptopia Software
 
     License         :GPLv3
 
@@ -85,7 +85,7 @@ class MFC(JApplet):
 		self.debug_panel=None
 		if DEBUG:self.debug_panel=DebugPanel()
 		
-		orch=Orch("http://www.asymptopia.org",1200,700,self)
+		orch=Orch("http://dev.asymptopia.org",1200,700,self)
 		self.orch=orch
 
 		self.c5panel=C5Panel(orch.hostname)

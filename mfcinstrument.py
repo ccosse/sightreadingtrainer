@@ -57,7 +57,7 @@ class MFCInstrument:
 		
 		if hostname[0:7]=='http://':
 			#self.sb=MidiSystem.getSoundbank(URL(hostname+"/static/MFC/soundbank.gm"))
-			self.sb=MidiSystem.getSoundbank(URL(hostname+"/static/MFC/soundbank-emg.sf2"))
+			self.sb=MidiSystem.getSoundbank(URL(hostname+"/static/sightreadingtrainer/soundbank-emg.sf2"))
 		else:
 			#self.sb=MidiSystem.getSoundbank(File(hostname+"soundbank.gm"))
 			self.sb=MidiSystem.getSoundbank(File(hostname+"soundbank-emg.sf2"))

@@ -449,11 +449,11 @@ class ScrollStaff(MFCInstrument,JPanel,awt.event.KeyListener,javax.swing.event.C
 		#
 		self.music=Music()
 		
-		note_img_fname=hostname+'/static/MFC/img/'+"notehead-2.png"
+		note_img_fname=hostname+'/static/sightreadingtrainer/img/'+"notehead-2.png"
 		static_note_img_fname=hostname+'img/'+"notehead-2.png"
 		
 		if hostname[0:7]=='http://':
-			self.img_dir="/static/MFC/img/"
+			self.img_dir="/static/sightreadingtrainer/img/"
 		else:
 			self.img_dir="./img/"
 		
