@@ -1,15 +1,9 @@
 """
 **********************************************************
 
-    Organization    :AsymptopiaSoftware | Software@theLimit
+    Author          :Charles Brissac
 
-    Website         :www.asymptopia.org
-
-    Author          :Charles B. Cosse
-
-    Email           :ccosse@gmail.com
-
-    Copyright       :(C) 2006-2017 Asymptopia Software
+    Email           :cdbrissac@gmail.com
 
     License         :GPLv3
 
