@@ -1,15 +1,9 @@
 """
 **********************************************************
 
-    Organization    :AsymptopiaSoftware | Software@theLimit
+    Author          :Charles Brissac
 
-    Website         :www.asymptopia.org
-
-    Author          :Charles B. Cosse
-
-    Email           :ccosse@gmail.com
-
-    Copyright       :(C) 2006-2011 Asymptopia Software
+    Email           :cdbrissac@gmail.com
 
     License         :GPLv3
 
@@ -32,12 +26,12 @@ DEBUG=False
 class MFCInstrument:
 
 	def __init__(self,name,hostname,hilight_colors,INITIALIZE_MIDI):
-		
+
 		self.name=name
 		if DEBUG:print self.name
-		
+
 		self.hostname=hostname
-			
+
 		self.hilight_colors=hilight_colors
 		self.hilighted=[]
 		self.cpCB=None
@@ -45,16 +39,16 @@ class MFCInstrument:
 		self.orch=None
 		self.ACTIVE=True
 		self.keyboardChannel=None
-		
+
 		#COMMON MIDI STUFF:
 		if not INITIALIZE_MIDI:return
 		self.synth=MidiSystem.getSynthesizer()
 		if not self.synth.isOpen():self.synth.open()
 		self.rcv=self.synth.getReceiver()
-		
+
 		self.keyboardChannel=None#NEED:for app
 		self.channelNo=0
-		
+
 		if hostname[0:7]=='http://':
 			#self.sb=MidiSystem.getSoundbank(URL(hostname+"/static/MFC/soundbank.gm"))
 			self.sb=MidiSystem.getSoundbank(URL(hostname+"/static/sightreadingtrainer/soundbank-emg.sf2"))
@@ -63,7 +57,7 @@ class MFCInstrument:
 			self.sb=MidiSystem.getSoundbank(File(hostname+"soundbank-emg.sf2"))
 			try:self.keyboardChannel=self.synth.getChannels()[0]
 			except Exception,e:print e
-		
+
 		instruments=self.sb.getInstruments()
 		#if DEBUG:print instruments
 		instlist=[]
@@ -77,12 +71,12 @@ class MFCInstrument:
 		self.program=self.instruments[0].getPatch().getProgram()
 
 	def registerCB(self,cpCB):
-		self.cpCB=cpCB;	
-	
+		self.cpCB=cpCB;
+
 	def clear_hilighted(self):
 		while len(self.hilighted):
 			self.hilighted.pop()
-	
+
 	def activeCB(self,e):
 		if DEBUG:print self.name,'activeCB'
 		if self.ACTIVE:
@@ -98,10 +92,10 @@ class MFCInstrument:
 
 	def instrumentCB(self,e):
 		if DEBUG:print 'mfcinstrument.instrumentCB'
-		
+
 		#name=self.cb.getSelectedItem()
 		name=e.getSource().getSelectedItem()
-		
+
 		idx=self.instlist.index(name)
 		if DEBUG:print 'loading: ',self.instruments[idx]
 		self.synth.loadInstrument(self.instruments[idx])
@@ -109,7 +103,7 @@ class MFCInstrument:
 		program=self.instruments[idx].getPatch().getProgram()
 		self.bank=bank
 		self.program=program
-		
+
 		#"""
 		if self.keyboardChannel:
 			c=self.synth.getChannels()

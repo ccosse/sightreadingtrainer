@@ -1,15 +1,9 @@
 """
 **********************************************************
 
-    Organization    :AsymptopiaSoftware | Software@theLimit
+    Author          :Charles Brissac
 
-    Website         :www.asymptopia.org
-
-    Author          :Charles B. Cosse
-
-    Email           :ccosse@gmail.com
-
-    Copyright       :(C) 2006-2011 Asymptopia Software
+    Email           :cdbrissac@gmail.com
 
     License         :GPLv3
 
@@ -47,14 +41,14 @@ class Music:
 			{'ly':"c'"		,'midi':60	,'sharp':False, 'flat':False,	'staff_region':'lower treble ledgers',	'amline':True},
 			{'ly':"b"		,'midi':59	,'sharp':False, 'flat':False,	'staff_region':'lower treble ledgers',	'amline':False},
 			{'ly':"a"		,'midi':57	,'sharp':False, 'flat':False,	'staff_region':'lower treble ledgers',	'amline':True},
-			
+
 			{'ly':"g"		,'midi':55	,'sharp':False, 'flat':False,	'staff_region':'lower treble ledgers',	'amline':False},#H/2-1 (first space above H/2)
-			
+
 		]
-		
+
 		#----------------------------------H/2 Unoccupied--------------------------------  H/2
-		
-		
+
+
 		self.bnotes=[
 			{'ly':"f'"		,'midi':65	,'sharp':False, 'flat':False,	'staff_region':'upper bass ledgers',	'amline':False},#H/2+1 (first space below H/2)
 
@@ -91,7 +85,7 @@ class Music:
 		]
 		self.maj_midi_intervals=[2,2,1,2,2,2,1]
 		self.min_midi_intervals=[2,1,2,2,1,2,2]
-	
+
 		self.CHORD_INTERVALS={
 			'Major':		[0,4,7],#[[0,4,7],[4,7,12],[7,12,16]],#[[0,4,7],[-8,-5,0],[-5,0,4]],
 			'Minor':		[0,3,7],
@@ -125,7 +119,7 @@ class Music:
 				['Diminished'],
 				['Major 7']
 			]
-		
+
 		self.minor_key_chords=[
 				['Minor','Minor 7','Minor 6','7 Flat 5','7','9','7 Flat 5','11','13'],
 				['Diminished','Minor 6','7 Flat 5','7','9','7 Flat 5','11','13'],
@@ -136,14 +130,14 @@ class Music:
 				['Major','Major 7','Minor 6','7 Flat 5','7','9','7 Flat 5','11','13'],
 				['Major','7','Minor 6','7 Flat 5','7','9','7 Flat 5','11','13']
 			]
-	
+
 	def getStaffRegionUsingY1(self,y1):
 		for tnote in self.tnotes:
 			if tnote['y1']==y1:return tnote['staff_region']
 		for bnote in self.bnotes:
 			if bnote['y1']==y1:return bnote['staff_region']
 		else:return None
-	
+
 	def getBidx(self,midi):
 		for bidx in range(len(self.bnotes)):
 			if self.bnotes[bidx]['midi']==midi:return bidx
@@ -151,7 +145,7 @@ class Music:
 			elif self.bnotes[bidx]['flat'] and self.bnotes[bidx]['midi']-1==midi:return bidx#
 		if DEBUG:print 'getBidx returning None (24-65)',midi
 		return None
-		
+
 	def getTidx(self,midi):
 		for tidx in range(len(self.tnotes)):
 			if self.tnotes[tidx]['midi']==midi:return tidx
@@ -159,7 +153,7 @@ class Music:
 			elif self.tnotes[tidx]['flat'] and self.tnotes[tidx]['midi']-1==midi:return tidx#
 		if DEBUG:print 'getTidx returning None (55-89)',midi
 		return None
-	
+
 	def getNotes(self,name,sig,minor,active_modes,active_staff_regions,*args):
 		if DEBUG:print 'getNotes',name
 		if len(active_modes)<1:return []
@@ -174,60 +168,60 @@ class Music:
 			min_midi=55
 			max_midi=89
 			notes=self.tnotes
-		
+
 		if DEBUG:print "min_midi=",min_midi," max_midi=",max_midi
-		
+
 		ctype=active_modes[int(random()*len(active_modes))]
 		if DEBUG:print "ctype=",ctype
-		
+
 		roots=None
 		if minor:roots=sig['minkey_midi_roots']
 		else:roots=sig['majkey_midi_roots']
 		if DEBUG:print "roots=",roots
-		
+
 		key_root=None
 		while key_root==None:
 			key_root=roots[int(random()*len(roots))]
-			
+
 			if key_root>=min_midi and key_root<=max_midi:pass
 			else:
 				key_root=None
 				continue
-				
+
 			if name=="Bass":
 				if active_staff_regions[notes[self.getBidx(key_root)]['staff_region']]:pass
 				else:key_root=None
 			else:
 				if active_staff_regions[notes[self.getTidx(key_root)]['staff_region']]:pass
 				else:key_root=None
-			
+
 		if DEBUG:print "key_root=",key_root
-		
+
 		intervals=None
 		if minor:intervals=self.min_midi_intervals
 		else:intervals=self.maj_midi_intervals
 		if DEBUG:print "intervals=",intervals
-		
+
 		chord_root=key_root
 		relative_idx=int(random()*len(intervals))
 		for ridx in range(relative_idx):
 			chord_root+=intervals[ridx]
 		if DEBUG:print "chord_root=",chord_root
-		
+
 		chord_key=None
 		if minor:chord_key=self.minor_key_chords[relative_idx][int(random()*len(self.minor_key_chords[relative_idx]))]
 		else:chord_key=self.major_key_chords[relative_idx][int(random()*len(self.major_key_chords[relative_idx]))]
 		if DEBUG:print "chord_key=",chord_key
-		
+
 		chord_intervals=self.CHORD_INTERVALS[chord_key]
 		if DEBUG:print "chord_intervals=",chord_intervals
-		
+
 		numnotes=None
 		if ctype=="Single":numnotes=1
 		elif ctype=="Double":numnotes=2
 		elif ctype=="Chord":numnotes=len(chord_intervals)
 		if DEBUG:print "numnotes=",numnotes
-		
+
 		rval=[]
 		idx=None
 		if name=="Bass":
@@ -242,60 +236,60 @@ class Music:
 				if not idx:idx=self.getTidx(chord_root - 24)#both go from 0->up
 
 		rval.append(notes[idx])
-		
+
 		if DEBUG:print "got idx=",idx
 		if DEBUG:print "rval=",rval
-		
+
 		for nidx in range(1,numnotes):
-			
+
 			candidate=None
-			
+
 			if ctype=="Double":
 				cidx=int(random()*len(chord_intervals))
 				if cidx==0:cidx=1
 			else:cidx=nidx
-			
+
 			idx=None
 			if name=="Bass":
 				idx=self.getBidx(chord_root+chord_intervals[cidx])
 				if idx==None:idx=self.getBidx(chord_root-(12+chord_intervals[cidx]))
 				if idx==None:idx=self.getBidx(chord_root+(12+chord_intervals[cidx]))
 				if idx==None:continue
-				
+
 			else:
 				idx=self.getTidx(chord_root+chord_intervals[cidx])
 				if idx==None:idx=self.getTidx(chord_root-(12+chord_intervals[cidx]))
 				if idx==None:idx=self.getTidx(chord_root+(12+chord_intervals[cidx]))
 				if idx==None:continue
-			
+
 			candidate=notes[idx]
-			
+
 			if candidate['midi']>=min_midi and candidate['midi']<=max_midi:rval.append(notes[idx])
 			elif candidate['midi']<min_midi:
 				pass#try +12
 			elif candidate['midi']>max_midi:
 				pass#try -12
-			
+
 		return rval
-			
-	
+
+
 	def getLedgerList(self,note_img_dy,midi,staff_region):
-		
+
 		ylist=[]
 		direction=+1
-		
-		#######################################		
+
+		#######################################
 		#LOWER BASS LEDGERS
-		#######################################		
+		#######################################
 		if staff_region=='lower bass ledgers':
 			direction=+1
-			
+
 			bmax=len(self.bnotes)-1
 			bidx=self.getBidx(midi)
 			if not bidx:
 				print 'no bidx',midi;return ylist
 			bmin=bmax-10
-			
+
 			y1=self.bnotes[bidx]['y1']
 			amline=self.bnotes[bidx]['amline']
 			y0=None
@@ -304,26 +298,26 @@ class Music:
 				#the first in list isn't always there, depending if line or space
 			else:
 				y0=y1
-				
+
 			ylist.append(y0)
 			for bbidx in range(bidx-1,bmin+1,-2):
 				y0-=direction*note_img_dy
 				#y1=self.bnotes[bbidx]['y1']
 				#ylist.append(y1+note_img_dy/2)
 				ylist.append(y0)
-		
-		#######################################		
+
+		#######################################
 		#UPPER BASS LEDGERS
-		#######################################		
+		#######################################
 		if staff_region=='upper bass ledgers':
 			direction=-1
-			
+
 			bmax=4
 			bidx=self.getBidx(midi)
 			if bidx==None:
 				print 'no bidx',midi;return ylist
 			bmin=0
-			
+
 			y1=self.bnotes[bidx]['y1']
 			amline=self.bnotes[bidx]['amline']
 			y0=None
@@ -332,27 +326,27 @@ class Music:
 				#the first in list isn't always there, depending if line or space
 			elif bidx-1<bmax-2:
 				y0=y1+note_img_dy
-				
+
 			if y0!=None:ylist.append(y0)
-			
+
 			for bbidx in range(bidx-1,bmax-3,+2):
 				y0+=note_img_dy
 				#y1=self.bnotes[bbidx]['y1']
 				#ylist.append(y1+note_img_dy/2)
 				ylist.append(y0)
-		
-		#######################################		
+
+		#######################################
 		#LOWER TREBLE LEDGERS
-		#######################################		
+		#######################################
 		if staff_region=='lower treble ledgers':
 			direction=+1
-			
+
 			tmax=len(self.tnotes)-1
 			tidx=self.getTidx(midi)
 			if not tidx:
 				print 'no tidx',midi;return ylist
 			tmin=tmax-4
-			
+
 			y1=self.tnotes[tidx]['y1']
 			amline=self.tnotes[tidx]['amline']
 			y0=None
@@ -361,26 +355,26 @@ class Music:
 				#the first in list isn't always there, depending if line or space
 			else:
 				y0=y1
-				
+
 			ylist.append(y0)
 			for ttidx in range(tidx-1,tmin+1,-2):
 				y0-=direction*note_img_dy
 				#y1=self.tnotes[ttidx]['y1']
 				#ylist.append(y1+note_img_dy/2)
 				ylist.append(y0)
-		
-		#######################################		
+
+		#######################################
 		#UPPER TREBLE LEDGERS
-		#######################################		
+		#######################################
 		if staff_region=='upper treble ledgers':
 			direction=-1
-			
+
 			tmax=5
 			tidx=self.getTidx(midi)
 			if tidx==None:
 				print 'no tidx',midi;return ylist
 			tmin=0
-			
+
 			y1=self.tnotes[tidx]['y1']
 			amline=self.tnotes[tidx]['amline']
 			y0=None
@@ -389,15 +383,13 @@ class Music:
 				#the first in list isn't always there, depending if line or space
 			elif tidx<tmax:
 				y0=y1+note_img_dy
-				
+
 			if y0!=None:ylist.append(y0)
-			
+
 			for ttidx in range(tidx-1,tmax-2,+2):
 				y0+=note_img_dy
 				#y1=self.bnotes[ttidx]['y1']
 				#ylist.append(y1+note_img_dy/2)
 				ylist.append(y0)
-		
+
 		return ylist
-		
-		
